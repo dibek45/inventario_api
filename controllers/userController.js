@@ -31,8 +31,8 @@ function pre_user_schema(user,res){
          query: `EXEC SP_insert_user '${user.fullName}','${user.email}','${user.password}','${user.saltSecret}'`
      }
       sql.execute(cmd).then( function( result ) {  
-   
-            res.status(result[0].status).send([result[0].result]);
+   console.log(result[0].status);
+            res.status(parseInt(result[0].status)).send([result[0].result]);
      }, function( err ) {        
          console.log("ERROR este",JSON.stringify(err));
      } ) 
