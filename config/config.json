@@ -1,7 +1,15 @@
 {
     "development":{
         "PORT":3000,
-        "server":"10.11.1.14"
+        "server":"10.11.1.14",
+        "JWT_SECRET":"SECRET#123",
+        "JWT_EXP":"2m"
+    },
+    "production":{
+        "PORT":3000,
+        "server":"10.11.1.14",
+        "JWT_SECRET":"SECRET#123",
+        "JWT_EXP":"2m"
     }
 }
 
