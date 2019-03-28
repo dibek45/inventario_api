@@ -9,20 +9,20 @@ passport.use(
      (username,password,done)=>{
       
         user.find_one(username).then( function( result ) {  
-            console.log(JSON.stringify(result))
+            
             if (result.result=='No existe usuario') {
                 return done(null,false,{"message":'Usuario no esta registrado'})
                 }
             else{
-                var exitUser= user.compare_password(`${password}`,`${result.password}`).then((boolean)=>{
-                    if(exitUser)
+                 user.compare_password(`${password}`,`${result.password}`).then((boolean)=>{
+                    if(boolean)
                     return done(null,result,{"message":'Usuario correcto'});
             else
                 return done(null,false,{"message":'Contraseña incorrecta'})      
                     });
                 }
          
-        }, function( err ) {        
+        }, function(err) {        
             console.log("ERROR este",JSON.stringify(err));
         } )
      })

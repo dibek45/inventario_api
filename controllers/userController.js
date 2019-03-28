@@ -1,21 +1,18 @@
-
-const bcypt=require('bcrypt');
 const passport=require('passport');
 const sql = require('seriate');
 var dbConfig=require('../models/db');
 var user=require('../models/user');
 const _=require('lodash');
 
-
 sql.setDefaultConfig(dbConfig);
 
  module.exports.register=(req,res,next)=>{
 
-      let User = new user.Model({fullName:req.body.fullName,email:req.body.email,password:req.body.password,saltSecret:req.body.saltSecret})
-       user.add_salt(User).then(User => {
-         user.insert_registro(User).then(resultadoFinal => {
-            if(resultadoFinal[0].status==402)return res.status(402).json(resultadoFinal[0].status);
-            return res.status(200).json(resultadoFinal[0].status);
+         let User = new user.Model({fullName:req.body.fullName,email:req.body.email,password:req.body.password,saltSecret:req.body.saltSecret})
+         user.add_salt(User).then(User => {
+         user.insert_registro(User).then(result => {
+            if(result[0].status==402)return res.status(402).json(result[0].status);
+            return res.status(200).json(result[0].status);
          });
       });
    
@@ -29,17 +26,14 @@ module.exports.authenticate=(req,res)=>{
        if(err){
           console.log(err)
           return res.status(400).json(err);
-         }
-       else if(User){
+         }else if(User){
           user.generateJwt(User.userID).then((result)=>{
             return res.status(200).json({"token":result})
           })
-       }
-       else if(!User){
+       }else if(!User){
           console.log('No hay un usuario');
-          return res.status(200).json({info})
-       }
-       else return res.status(404).json(info);
+          return res.status(402).json({info});
+       }else return res.status(404).json(info);
     })(req,res); 
  }
 
